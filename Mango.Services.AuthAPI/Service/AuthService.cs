@@ -54,10 +54,12 @@ namespace Mango.Services.AuthAPI.Service
             if (isValid == false)
             {
                 return new LoginResponseDto() { User = null, Token = "" };
-            }
+            }            
 
+            // get all user roles
+            var roles = await _userManager.GetRolesAsync(user); 
             // if user was found we need to generate the JWT Token
-            string token = _jwtTokenGenerator.GenerateToken(user);
+            string token = _jwtTokenGenerator.GenerateToken(user, roles);
 
             UserDto userDto = new()
             {
@@ -72,8 +74,7 @@ namespace Mango.Services.AuthAPI.Service
                 User = userDto,
                 Token = token
             };
-
-            test123123();
+            
 
             return loginResponseDto;
         }
@@ -120,9 +121,6 @@ namespace Mango.Services.AuthAPI.Service
             return "Error Encountered";
         }
 
-        private void test123123()
-        {
-            
-        }
+        
     }
 }
